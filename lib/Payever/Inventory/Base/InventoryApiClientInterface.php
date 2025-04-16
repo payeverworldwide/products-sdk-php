@@ -1,22 +1,26 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  Inventory
  * @package   Payever\Inventory
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\Inventory\Base;
 
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequestEntity;
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequestEntity;
+use Payever\Sdk\Core\Http\Response;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCollectionCreateRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequest;
 
+/**
+ * Interface describes functions of InventoryApiClient
+ */
 interface InventoryApiClientInterface
 {
     /**
@@ -25,32 +29,36 @@ interface InventoryApiClientInterface
      * Only first request will actually create an inventory record for SKU,
      * all subsequent requests will be ignored.
      *
-     * @param InventoryCreateRequestEntity $entity
+     * @param InventoryCreateRequest $inventoryRequest
      *
-     * @return \Payever\Sdk\Core\Http\Response
-     * @throws \Exception
+     * @return Response
      */
-    public function createInventory(InventoryCreateRequestEntity $entity);
+    public function createInventory(InventoryCreateRequest $inventoryRequest);
+
+    /**
+     * @param InventoryCollectionCreateRequest $inventoryRequest
+     *
+     * @return Response
+     */
+    public function createOrUpdateInventoryCollection(InventoryCollectionCreateRequest $inventoryRequest);
 
     /**
      * Inform payever about increased inventory for product
      *
-     * @param InventoryChangedRequestEntity $entity
+     * @param InventoryChangedRequest $inventoryRequest
      *
-     * @return \Payever\Sdk\Core\Http\Response
-     * @throws \Exception
+     * @return Response
      */
-    public function addInventory(InventoryChangedRequestEntity $entity);
+    public function addInventory(InventoryChangedRequest $inventoryRequest);
 
     /**
      * Inform payever about decreased inventory for product
      *
-     * @param InventoryChangedRequestEntity $entity
+     * @param InventoryChangedRequest $inventoryRequest
      *
-     * @return \Payever\Sdk\Core\Http\Response
-     * @throws \Exception
+     * @return Response
      */
-    public function subtractInventory(InventoryChangedRequestEntity $entity);
+    public function subtractInventory(InventoryChangedRequest $inventoryRequest);
 
     /**
      * Batch export inventory records to payever
@@ -59,7 +67,6 @@ interface InventoryApiClientInterface
      * @param string $externalId
      *
      * @return int - Number of successfully exported records
-     * @throws \Exception
      */
     public function exportInventory(InventoryIteratorInterface $inventoryIterator, $externalId);
 }

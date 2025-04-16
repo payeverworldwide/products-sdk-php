@@ -1,40 +1,40 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  RequestEntity
  * @package   Payever\Products
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\Products\Http\RequestEntity;
 
-use Payever\Sdk\Core\Http\RequestEntity;
+use Payever\Sdk\Core\Http\MessageEntity\RequestEntity;
 
 /**
+ * This class represents ProductRemovedRequest
  * When sending entity to payever at least one of the following MUST be filled in: sku, uuid
  *
  * @method string getExternalId()
  * @method string getUuid()
  * @method string getSku()
- * @method self setExternalId(string $externalId)
- * @method self setSku(string $sku)
- * @method self setUuid(string $uuid)
+ * @method $this  setExternalId(string $externalId)
+ * @method $this  setSku(string $sku)
+ * @method $this  setUuid(string $uuid)
  */
-class ProductRemovedRequestEntity extends RequestEntity
+class ProductRemovedRequest extends RequestEntity
 {
-    /** @var string */
+    /** @var string $externalId */
     protected $externalId;
 
-    /** @var array */
+    /** @var array $uuid */
     protected $uuid;
 
-    /** @var string */
+    /** @var string $sku */
     protected $sku;
 
     /**

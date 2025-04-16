@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PHP version 5.4 and 7
  *
@@ -10,11 +11,11 @@
 
 namespace Payever\Tests\Unit\Payever\ThirdParty\Http\ResponseEntity;
 
-use Payever\Sdk\ThirdParty\Http\ResponseEntity\SubscriptionResponseEntity;
+use Payever\Sdk\ThirdParty\Http\ResponseEntity\SubscriptionResponse;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 use Payever\Tests\Unit\Payever\ThirdParty\Http\MessageEntity\SubscriptionActionEntityTest;
 
-class SubscriptionResponseEntityTest extends AbstractMessageEntityTest
+class SubscriptionResponseTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'externalId' => null,
@@ -35,6 +36,6 @@ class SubscriptionResponseEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new SubscriptionResponseEntity();
+        return new SubscriptionResponse();
     }
 }

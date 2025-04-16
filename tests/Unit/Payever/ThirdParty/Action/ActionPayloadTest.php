@@ -55,8 +55,8 @@ class ActionPayloadTest extends TestCase
      */
     public function entityMappingDataProvider()
     {
-        $productRequest = 'Payever\Sdk\Products\Http\RequestEntity\ProductRequestEntity';
-        $productRemovedRequest = 'Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequestEntity';
+        $productRequest = 'Payever\Sdk\Products\Http\RequestEntity\ProductRequest';
+        $productRemovedRequest = 'Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequest';
         $inventoryRequest = 'Payever\Sdk\Inventory\Http\MessageEntity\InventoryChangedEntity';
 
         return array(

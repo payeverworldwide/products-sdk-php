@@ -14,30 +14,24 @@
 namespace Payever\Sdk\ThirdParty\Http\MessageEntity;
 
 use Payever\Sdk\Core\Base\MessageEntity;
-use Payever\Sdk\ThirdParty\Enum\ActionEnum;
 
 /**
- * This class represents SubscriptionActionEntity
+ * This class represents SubscriptionSettingSyncScheduleEntity
  *
- * @method string getName()
- * @method string getUrl()
- * @method string getMethod()
- * @method $this  setName(string $name)
- * @method $this  setUrl(string $url)
- * @method $this  setMethod(string $httpMethod)
+ * @method string getCronPhrase()
+ * @method string getIntegration()
+ * @method self   setCronPhrase(string $expression)
+ * @method self   setIntegration(string $integration)
  */
-class SubscriptionActionEntity extends MessageEntity
+class SubscriptionSettingSyncScheduleEntity extends MessageEntity
 {
     const UNDERSCORE_ON_SERIALIZATION = false;
 
-    /** @var string $name - {@see ActionEnum} */
-    protected $name;
+    /** @var string $cronPhrase */
+    protected $cronPhrase;
 
-    /** @var string $url */
-    protected $url;
-
-    /** @var string $method */
-    protected $method;
+    /** @var string $integration */
+    protected $integration;
 
     /**
      * @return array
@@ -45,9 +39,8 @@ class SubscriptionActionEntity extends MessageEntity
     public function getRequired()
     {
         return [
-            'name',
-            'url',
-            'method',
+            'cronPhrase',
+            'integration'
         ];
     }
 }

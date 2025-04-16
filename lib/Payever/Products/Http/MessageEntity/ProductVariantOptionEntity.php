@@ -1,15 +1,14 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  MessageEntity
  * @package   Payever\Products
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\Products\Http\MessageEntity;
@@ -17,17 +16,19 @@ namespace Payever\Sdk\Products\Http\MessageEntity;
 use Payever\Sdk\Core\Base\MessageEntity;
 
 /**
+ * This class represents ProductVariantOptionEntity
+ *
  * @method string getName()
  * @method string getValue()
- * @method self setName(string $name)
- * @method self setValue(string $value)
+ * @method $this  setName(string $name)
+ * @method $this  setValue(string $value)
  */
 class ProductVariantOptionEntity extends MessageEntity
 {
-    /** @var string */
+    /** @var string $name */
     protected $name;
 
-    /** @var string */
+    /** @var string $value */
     protected $value;
 
     /**

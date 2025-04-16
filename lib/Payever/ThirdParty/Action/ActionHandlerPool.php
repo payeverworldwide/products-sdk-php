@@ -1,25 +1,27 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  Action
  * @package   Payever\ThirdParty
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\ThirdParty\Action;
 
 /**
+ * This class represents ActionHandlerPool
+ * The ActionHandlerPool manages and retrieves handlers for specific actions and scalable action processing
+ *
  * @SuppressWarnings(PHPMD.MissingImport)
  */
 class ActionHandlerPool
 {
-    /** @var ActionHandlerInterface[] */
+    /** @var ActionHandlerInterface[] $handlers */
     protected $handlers;
 
     /**
@@ -36,7 +38,7 @@ class ActionHandlerPool
     /**
      * @param ActionHandlerInterface $handler
      *
-     * @return static
+     * @return $this
      */
     public function registerActionHandler(ActionHandlerInterface $handler)
     {
@@ -46,9 +48,10 @@ class ActionHandlerPool
     }
 
     /**
-     * @param string $action on of @see {ActionEnum}
+     * @param string $action - {@see ActionEnum}
      *
      * @return ActionHandlerInterface
+     *
      * @throws \RuntimeException when can't find corresponding handler
      */
     public function getHandlerForAction($action)

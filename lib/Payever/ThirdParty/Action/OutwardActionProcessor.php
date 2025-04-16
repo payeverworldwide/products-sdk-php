@@ -1,47 +1,51 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  Action
  * @package   Payever\ThirdParty
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\ThirdParty\Action;
 
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequestEntity;
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequestEntity;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCollectionCreateRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequest;
 use Payever\Sdk\Inventory\InventoryApiClient;
-use Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequestEntity;
-use Payever\Sdk\Products\Http\RequestEntity\ProductRequestEntity;
+use Payever\Sdk\Products\Http\RequestEntity\ProductCollectionRequest;
+use Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequest;
+use Payever\Sdk\Products\Http\RequestEntity\ProductRequest;
 use Payever\Sdk\Products\ProductsApiClient;
 use Payever\Sdk\ThirdParty\Enum\ActionEnum;
 use Psr\Log\LoggerInterface;
 
 /**
+ * This class represents OutwardActionProcessor
+ * The OutwardActionProcessor processes outbound API actions for inventory and products
+ *
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.MissingImport)
  */
 class OutwardActionProcessor
 {
-    /** @var ProductsApiClient */
+    /** @var ProductsApiClient $productsApiClient */
     private $productsApiClient;
 
-    /** @var InventoryApiClient */
+    /** @var InventoryApiClient $inventoryApiClient */
     private $inventoryApiClient;
 
-    /** @var LoggerInterface */
+    /** @var LoggerInterface $logger */
     private $logger;
 
     /**
-     * @param ProductsApiClient $productsApiClient
+     * @param ProductsApiClient  $productsApiClient
      * @param InventoryApiClient $inventoryApiClient
-     * @param LoggerInterface $logger
+     * @param LoggerInterface    $logger
      */
     public function __construct(
         ProductsApiClient $productsApiClient,
@@ -55,7 +59,7 @@ class OutwardActionProcessor
 
     /**
      * @param string $action - {@see ActionEnum}
-     * @param InventoryChangedRequestEntity|ProductRequestEntity|ProductRemovedRequestEntity|array|string $payload
+     * @param InventoryChangedRequest|ProductRequest|ProductRemovedRequest|array|string $payload
      *
      * @throws \RuntimeException - when given action is unknown
      * @throws \Exception - bubbles up anything thrown by API
@@ -93,7 +97,7 @@ class OutwardActionProcessor
 
     /**
      * @param string $action - {@see ActionEnum}
-     * @param InventoryChangedRequestEntity|ProductRequestEntity|ProductRemovedRequestEntity|array|string $payload
+     * @param InventoryChangedRequest|ProductRequest|ProductRemovedRequest|array|string $payload
      *
      * @throws \Exception
      */
@@ -104,37 +108,52 @@ class OutwardActionProcessor
         }
         switch ($action) {
             case ActionEnum::ACTION_SET_INVENTORY:
+                if ($payload instanceof InventoryCollectionCreateRequest) {
+                    $this->inventoryApiClient->createOrUpdateInventoryCollection($payload);
+                    break;
+                }
+
                 $this->inventoryApiClient->createInventory(
-                    $payload instanceof InventoryCreateRequestEntity
+                    $payload instanceof InventoryCreateRequest
                         ? $payload
-                        : new InventoryCreateRequestEntity($payload)
+                        : new InventoryCreateRequest($payload)
                 );
                 break;
             case ActionEnum::ACTION_ADD_INVENTORY:
+                if ($payload instanceof InventoryCollectionCreateRequest) {
+                    $this->inventoryApiClient->createOrUpdateInventoryCollection($payload);
+                    break;
+                }
+
                 $this->inventoryApiClient->addInventory(
-                    $payload instanceof InventoryChangedRequestEntity
+                    $payload instanceof InventoryChangedRequest
                         ? $payload
-                        : new InventoryChangedRequestEntity($payload)
+                        : new InventoryChangedRequest($payload)
                 );
                 break;
             case ActionEnum::ACTION_SUBTRACT_INVENTORY:
                 $this->inventoryApiClient->subtractInventory(
-                    $payload instanceof InventoryChangedRequestEntity
+                    $payload instanceof InventoryChangedRequest
                         ? $payload
-                        : new InventoryChangedRequestEntity($payload)
+                        : new InventoryChangedRequest($payload)
                 );
                 break;
             case ActionEnum::ACTION_CREATE_PRODUCT:
             case ActionEnum::ACTION_UPDATE_PRODUCT:
+                if ($payload instanceof ProductCollectionRequest) {
+                    $this->productsApiClient->createOrUpdateProductCollection($payload);
+                    break;
+                }
+
                 $this->productsApiClient->createOrUpdateProduct(
-                    $payload instanceof ProductRequestEntity ? $payload : new ProductRequestEntity($payload)
+                    $payload instanceof ProductRequest ? $payload : new ProductRequest($payload)
                 );
                 break;
             case ActionEnum::ACTION_REMOVE_PRODUCT:
                 $this->productsApiClient->removeProduct(
-                    $payload instanceof ProductRemovedRequestEntity
+                    $payload instanceof ProductRemovedRequest
                         ? $payload
-                        : new ProductRemovedRequestEntity($payload)
+                        : new ProductRemovedRequest($payload)
                 );
                 break;
             default:

@@ -2,10 +2,10 @@
 
 namespace Payever\Tests\Unit\Payever\Products\Http\RequestEntity;
 
-use Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequestEntity;
+use Payever\Sdk\Products\Http\RequestEntity\ProductRemovedRequest;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 
-class ProductRemovedRequestEntityTest extends AbstractMessageEntityTest
+class ProductRemovedRequestTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'sku' => 'stub_sku',
@@ -14,6 +14,6 @@ class ProductRemovedRequestEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new ProductRemovedRequestEntity();
+        return new ProductRemovedRequest();
     }
 }

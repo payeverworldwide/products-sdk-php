@@ -4,12 +4,12 @@ namespace Payever\Tests\Unit\Payever\Products\Http\RequestEntity;
 
 use Payever\Sdk\Products\Http\MessageEntity\ProductCategoryEntity;
 use Payever\Sdk\Products\Http\MessageEntity\ProductShippingEntity;
-use Payever\Sdk\Products\Http\RequestEntity\ProductRequestEntity;
+use Payever\Sdk\Products\Http\RequestEntity\ProductRequest;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 use Payever\Tests\Unit\Payever\Products\Http\MessageEntity\ProductCategoryEntityTest;
 use Payever\Tests\Unit\Payever\Products\Http\MessageEntity\ProductVariantOptionEntityTest;
 
-class ProductRequestEntityTest extends AbstractMessageEntityTest
+class ProductRequestTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'externalId' => 'stub_id',
@@ -46,7 +46,7 @@ class ProductRequestEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new ProductRequestEntity();
+        return new ProductRequest();
     }
 
     public function testSetShipping()

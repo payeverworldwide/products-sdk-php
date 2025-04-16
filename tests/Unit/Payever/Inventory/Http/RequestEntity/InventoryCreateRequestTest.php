@@ -2,10 +2,10 @@
 
 namespace Payever\Tests\Unit\Payever\Inventory\Http\RequestEntity;
 
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequestEntity;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequest;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 
-class InventoryCreateRequestEntityTest extends AbstractMessageEntityTest
+class InventoryCreateRequestTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'sku' => 'stub_sku',
@@ -15,6 +15,6 @@ class InventoryCreateRequestEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new InventoryCreateRequestEntity();
+        return new InventoryCreateRequest();
     }
 }

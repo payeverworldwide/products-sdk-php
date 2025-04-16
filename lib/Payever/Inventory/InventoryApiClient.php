@@ -1,27 +1,31 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  Inventory
  * @package   Payever\Inventory
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\Inventory;
 
-use Payever\Sdk\Core\CommonProductsThirdPartyApiClient;
 use Payever\Sdk\Core\Http\RequestBuilder;
 use Payever\Sdk\Core\Http\ResponseEntity\DynamicResponse;
 use Payever\Sdk\Inventory\Base\InventoryApiClientInterface;
 use Payever\Sdk\Inventory\Base\InventoryIteratorInterface;
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequestEntity;
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequestEntity;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCollectionCreateRequest;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryCreateRequest;
+use Payever\Sdk\ThirdParty\CommonProductsThirdPartyApiClient;
 
+/**
+ * This class represents payever Inventory API Connector
+ * InventoryApiClient handles inventory operations, including creating, adding, subtracting, and exporting inventory
+ */
 class InventoryApiClient extends CommonProductsThirdPartyApiClient implements InventoryApiClientInterface
 {
     const SUB_URL_INVENTORY_CREATE = 'api/inventory/%s';
@@ -30,18 +34,20 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @inheritdoc
+     *
+     * @throws \Exception
      */
-    public function createInventory(InventoryCreateRequestEntity $entity)
+    public function createInventory(InventoryCreateRequest $inventoryRequest)
     {
         $this->getConfiguration()->assertLoaded();
-        $url = $this->getCreateInventoryUrl($entity->getExternalId());
+        $url = $this->getCreateInventoryUrl($inventoryRequest->getExternalId());
 
         $request = RequestBuilder::post($url)
             ->contentTypeIsJson()
             ->addRawHeader(
                 $this->getToken()->getAuthorizationString()
             )
-            ->setRequestEntity($entity)
+            ->setRequestEntity($inventoryRequest)
             ->setResponseEntity(new DynamicResponse())
             ->build();
 
@@ -50,18 +56,20 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @inheritdoc
+     *
+     * @throws \Exception
      */
-    public function addInventory(InventoryChangedRequestEntity $entity)
+    public function createOrUpdateInventoryCollection(InventoryCollectionCreateRequest $inventoryRequest)
     {
         $this->getConfiguration()->assertLoaded();
-        $url = $this->getAddInventoryUrl($entity->getExternalId());
+        $url = $this->getCreateInventoryUrl($inventoryRequest->getExternalId());
 
-        $request = RequestBuilder::post($url)
+        $request = RequestBuilder::put($url)
             ->contentTypeIsJson()
             ->addRawHeader(
                 $this->getToken()->getAuthorizationString()
             )
-            ->setRequestEntity($entity)
+            ->setRequestEntity($inventoryRequest)
             ->setResponseEntity(new DynamicResponse())
             ->build();
 
@@ -70,18 +78,20 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @inheritdoc
+     *
+     * @throws \Exception
      */
-    public function subtractInventory(InventoryChangedRequestEntity $entity)
+    public function addInventory(InventoryChangedRequest $inventoryRequest)
     {
         $this->getConfiguration()->assertLoaded();
-        $url = $this->getSubtractInventoryUrl($entity->getExternalId());
+        $url = $this->getAddInventoryUrl($inventoryRequest->getExternalId());
 
         $request = RequestBuilder::post($url)
             ->contentTypeIsJson()
             ->addRawHeader(
                 $this->getToken()->getAuthorizationString()
             )
-            ->setRequestEntity($entity)
+            ->setRequestEntity($inventoryRequest)
             ->setResponseEntity(new DynamicResponse())
             ->build();
 
@@ -90,28 +100,45 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @inheritdoc
+     *
+     * @throws \Exception
+     */
+    public function subtractInventory(InventoryChangedRequest $inventoryRequest)
+    {
+        $this->getConfiguration()->assertLoaded();
+        $url = $this->getSubtractInventoryUrl($inventoryRequest->getExternalId());
+
+        $request = RequestBuilder::post($url)
+            ->contentTypeIsJson()
+            ->addRawHeader(
+                $this->getToken()->getAuthorizationString()
+            )
+            ->setRequestEntity($inventoryRequest)
+            ->setResponseEntity(new DynamicResponse())
+            ->build();
+
+        return $this->executeRequest($request);
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @throws \Exception
      */
     public function exportInventory(InventoryIteratorInterface $inventoryIterator, $externalId)
     {
         $this->getConfiguration()->assertLoaded();
         $successCount = 0;
 
+        $inventoryCollection = new InventoryCollectionCreateRequest();
+        $inventoryCollection->setExternalId($externalId);
+
         foreach ($inventoryIterator as $requestEntity) {
-            try {
-                $requestEntity->setExternalId($externalId);
-                $this->createInventory($requestEntity);
-            } catch (\Exception $exception) {
-                $this->getConfiguration()->getLogger()
-                    ->critical(
-                        'Inventory item failed to export',
-                        [
-                            'sku' => $requestEntity->getSku(),
-                            'exception' => $exception->getMessage(),
-                        ]
-                    );
-                throw $exception;
-            }
+            $requestEntity->setExternalId($externalId);
+            $inventoryCollection->addInventory($requestEntity);
         }
+
+        $this->createOrUpdateInventoryCollection($inventoryCollection);
 
         return $successCount;
     }
@@ -128,6 +155,7 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @param string $externalId
+     *
      * @return string
      */
     private function getAddInventoryUrl($externalId)
@@ -137,6 +165,7 @@ class InventoryApiClient extends CommonProductsThirdPartyApiClient implements In
 
     /**
      * @param string $externalId
+     *
      * @return string
      */
     private function getSubtractInventoryUrl($externalId)

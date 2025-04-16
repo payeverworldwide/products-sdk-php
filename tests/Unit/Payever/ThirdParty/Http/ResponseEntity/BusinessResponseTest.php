@@ -2,10 +2,10 @@
 
 namespace Payever\Tests\Unit\Payever\ThirdParty\Http\ResponseEntity;
 
-use Payever\Sdk\ThirdParty\Http\ResponseEntity\BusinessResponseEntity;
+use Payever\Sdk\ThirdParty\Http\ResponseEntity\BusinessResponse;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 
-class BusinessResponseEntityTest extends AbstractMessageEntityTest
+class BusinessResponseTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'name' => 'stub',
@@ -16,13 +16,13 @@ class BusinessResponseEntityTest extends AbstractMessageEntityTest
     public static function getScheme()
     {
         $scheme = parent::getScheme();
-        $scheme['subscriptions'][] = SubscriptionResponseEntityTest::getScheme();
+        $scheme['subscriptions'][] = SubscriptionResponseTest::getScheme();
 
         return $scheme;
     }
 
     public function getEntity()
     {
-        return new BusinessResponseEntity();
+        return new BusinessResponse();
     }
 }

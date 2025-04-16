@@ -2,7 +2,7 @@
 
 namespace Payever\Tests\Unit\Payever\Products\Http\MessageEntity;
 
-use Payever\Sdk\Products\Http\RequestEntity\ProductRequestEntity;
+use Payever\Sdk\Products\Http\RequestEntity\ProductRequest;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 
 class ProductRequestEntityTest extends AbstractMessageEntityTest
@@ -24,6 +24,6 @@ class ProductRequestEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new ProductRequestEntity();
+        return new ProductRequest();
     }
 }

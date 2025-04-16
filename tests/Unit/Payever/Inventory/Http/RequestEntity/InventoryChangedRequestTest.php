@@ -2,10 +2,10 @@
 
 namespace Payever\Tests\Unit\Payever\Inventory\Http\RequestEntity;
 
-use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequestEntity;
+use Payever\Sdk\Inventory\Http\RequestEntity\InventoryChangedRequest;
 use Payever\Tests\Unit\Payever\Core\Http\AbstractMessageEntityTest;
 
-class InventoryChangedRequestEntityTest extends AbstractMessageEntityTest
+class InventoryChangedRequestTest extends AbstractMessageEntityTest
 {
     protected static $scheme = array(
         'quantity' => 10,
@@ -15,6 +15,6 @@ class InventoryChangedRequestEntityTest extends AbstractMessageEntityTest
 
     public function getEntity()
     {
-        return new InventoryChangedRequestEntity();
+        return new InventoryChangedRequest();
     }
 }

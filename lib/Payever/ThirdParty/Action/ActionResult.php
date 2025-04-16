@@ -1,15 +1,14 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  Action
  * @package   Payever\ThirdParty
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\ThirdParty\Action;
@@ -17,31 +16,34 @@ namespace Payever\Sdk\ThirdParty\Action;
 use Payever\Sdk\Core\Base\MessageEntity;
 
 /**
- * @method int getCreatedCount()
- * @method int getUpdatedCount()
- * @method int getDeletedCount()
- * @method int getSkippedCount()
+ * This class represents ActionResult
+ * The ActionResult class encapsulates the results of an action operations
+ *
+ * @method int      getCreatedCount()
+ * @method int      getUpdatedCount()
+ * @method int      getDeletedCount()
+ * @method int      getSkippedCount()
  * @method string[] getErrors();
  */
 class ActionResult extends MessageEntity
 {
-    /** @var int */
+    /** @var int $createdCount */
     protected $createdCount = 0;
 
-    /** @var int */
+    /** @var int $updatedCount */
     protected $updatedCount = 0;
 
-    /** @var int */
+    /** @var int $deletedCount */
     protected $deletedCount = 0;
 
-    /** @var int */
+    /** @var int $skippedCount */
     protected $skippedCount = 0;
 
-    /** @var string[] */
+    /** @var string[] $errors */
     protected $errors = [];
 
     /**
-     * @return static
+     * @return $this
      */
     public function incrementCreated()
     {
@@ -51,7 +53,7 @@ class ActionResult extends MessageEntity
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function incrementUpdated()
     {
@@ -61,7 +63,7 @@ class ActionResult extends MessageEntity
     }
 
     /**
-     * @return static
+     * @return $this
      */
     public function incrementDeleted()
     {
@@ -91,7 +93,7 @@ class ActionResult extends MessageEntity
     /**
      * @param string $error
      *
-     * @return static
+     * @return $this
      */
     public function addError($error)
     {
@@ -111,7 +113,7 @@ class ActionResult extends MessageEntity
     /**
      * @param \Exception $exception
      *
-     * @return static
+     * @return $this
      */
     public function addException(\Exception $exception)
     {
@@ -121,7 +123,7 @@ class ActionResult extends MessageEntity
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function toString()
     {

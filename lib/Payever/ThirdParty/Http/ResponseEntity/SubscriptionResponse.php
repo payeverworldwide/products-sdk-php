@@ -1,61 +1,66 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  ResponseEntity
  * @package   Payever\ThirdParty
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\ThirdParty\Http\ResponseEntity;
 
-use Payever\Sdk\Core\Http\ResponseEntity;
+use Payever\Sdk\Core\Http\MessageEntity\ResponseEntity;
 use Payever\Sdk\ThirdParty\Http\MessageEntity\SubscriptionActionEntity;
 
 /**
- * @method string getId()
- * @method string getAuthorizationId()
- * @method string getIntegration()
- * @method bool getConnected()
- * @method \DateTime|false getCreatedAt()
- * @method \DateTime|false getUpdatedAt()
+ * This class represents BusinessResponse
+ *
+ * @method string                     getId()
+ * @method string                     getAuthorizationId()
+ * @method string                     getIntegration()
+ * @method string                     getIsProductSyncEnable()
+ * @method bool                       getConnected()
+ * @method \DateTime|false            getCreatedAt()
+ * @method \DateTime|false            getUpdatedAt()
  * @method SubscriptionActionEntity[] getActions()
  */
-class SubscriptionResponseEntity extends ResponseEntity
+class SubscriptionResponse extends ResponseEntity
 {
     /**
      * @deprecated use $authorizationId instead
      *
-     * @var string
+     * @var string $externalId
      */
     protected $externalId;
 
     /**
      * Field value must be saved by user for further use in sync-related requests
      *
-     * @var string
+     * @var string $authorizationId
      */
     protected $authorizationId;
 
-    /** @var string */
+    /** @var string $integration */
     protected $integration;
 
-    /** @var bool */
+    /** @var bool $connected */
     protected $connected;
 
-    /** @var \DateTime|bool */
+    /** @var \DateTime|bool $createdAt */
     protected $createdAt;
 
-    /** @var \DateTime|bool */
+    /** @var \DateTime|bool $updatedAt */
     protected $updatedAt;
 
-    /** @var SubscriptionActionEntity[] */
+    /** @var SubscriptionActionEntity[] $actions */
     protected $actions;
+
+    /** @var bool $isProductSyncEnable */
+    protected $isProductSyncEnable;
 
     /**
      * @deprecated use getAuthorizationId() instead
@@ -71,7 +76,8 @@ class SubscriptionResponseEntity extends ResponseEntity
 
     /**
      * @param string $createdAt
-     * @return self
+     *
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -84,7 +90,8 @@ class SubscriptionResponseEntity extends ResponseEntity
 
     /**
      * @param string $updatedAt
-     * @return self
+     *
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -97,7 +104,8 @@ class SubscriptionResponseEntity extends ResponseEntity
 
     /**
      * @param array $actions
-     * @return static
+     *
+     * @return $this
      */
     public function setActions($actions)
     {

@@ -1,67 +1,73 @@
 <?php
 
 /**
- * PHP version 5.4 and 8
+ * PHP version 5.6 and 8
  *
  * @category  RequestEntity
  * @package   Payever\Products
  * @author    payever GmbH <service@payever.de>
- * @author    Hennadii.Shymanskyi <gendosua@gmail.com>
- * @copyright 2017-2021 payever GmbH
+ * @copyright 2017-2024 payever GmbH
  * @license   MIT <https://opensource.org/licenses/MIT>
- * @link      https://docs.payever.org/shopsystems/api/getting-started
+ * @link      https://docs.payever.org/api/payments/v3/getting-started-v3
  */
 
 namespace Payever\Sdk\Products\Http\RequestEntity;
 
-use Payever\Sdk\Core\Http\RequestEntity;
+use Payever\Sdk\Core\Http\MessageEntity\RequestEntity;
 use Payever\Sdk\Products\Http\MessageEntity\ProductCategoryEntity;
 use Payever\Sdk\Products\Http\MessageEntity\ProductShippingEntity;
 use Payever\Sdk\Products\Http\MessageEntity\ProductVariantOptionEntity;
+use Payever\Sdk\Products\Http\MessageEntity\ProductInventoryEntity;
 
 /**
- * @method string getExternalId()
- * @method string[] getImages()
- * @method string[] getImagesUrl()
- * @method bool getActive()
- * @method string getUuid()
- * @method string getBusinessUuid()
- * @method ProductCategoryEntity[]|string[] getCategories()
- * @method string getCurrency()
- * @method string getTitle()
- * @method string getDescription()
- * @method float getPrice()
- * @method float|null getSalePrice()
- * @method bool getOnSales()
- * @method string getBarcode()
- * @method float getVatRate()
+ * This class represents ProductRequest
+ *
+ * @method string                             getExternalId()
+ * @method string[]                           getImages()
+ * @method string[]                           getImagesUrl()
+ * @method bool                               getActive()
+ * @method string                             getUuid()
+ * @method string                             getBusinessUuid()
+ * @method ProductCategoryEntity[]|string[]   getCategories()
+ * @method string                             getCurrency()
+ * @method string                             getTitle()
+ * @method string                             getDescription()
+ * @method float                              getPrice()
+ * @method float|null                         getSalePrice()
+ * @method bool                               getOnSales()
+ * @method string                             getBarcode()
+ * @method float                              getVatRate()
  * @method ProductVariantOptionEntity[]|array getOptions()
- * @method string getType()
- * @method self[]|array getVariants()
- * @method ProductShippingEntity|null getShipping()
- * @method \DateTime|false getCreatedAt()
- * @method \DateTime|false getUpdatedAt()
- * @method string|null getParent()
- * @method string|null getProduct()
- * @method self setExternalId(string $externalId)
- * @method self setImages(array $images)
- * @method self setImagesUrl(array $imagesUrl)
- * @method self setActive(bool $active)
- * @method self setUuid(string $uuid)
- * @method self setBusinessUuid(string $businessUuid)
- * @method self setCurrency(string $currency)
- * @method self setTitle(string $title)
- * @method self setDescription(string $description)
- * @method self setPrice(float $price)
- * @method self setOnSales(bool $onSales)
- * @method self setSku(string $sku)
- * @method self setBarcode(string $barcode)
- * @method self setVatRate(float $vatRate)
- * @method self setType(string $type)
+ * @method string                             getType()
+ * @method string                             getCountry()
+ * @method string                             getLanguage()
+ * @method self[]|array                       getVariants()
+ * @method ProductShippingEntity|null         getShipping()
+ * @method \DateTime|false                    getCreatedAt()
+ * @method \DateTime|false                    getUpdatedAt()
+ * @method string|null                        getParent()
+ * @method string|null                        getProduct()
+ * @method $this                              setExternalId(string $externalId)
+ * @method $this                              setImages(array $images)
+ * @method $this                              setImagesUrl(array $imagesUrl)
+ * @method $this                              setActive(bool $active)
+ * @method $this                              setUuid(string $uuid)
+ * @method $this                              setBusinessUuid(string $businessUuid)
+ * @method $this                              setCurrency(string $currency)
+ * @method $this                              setTitle(string $title)
+ * @method $this                              setDescription(string $description)
+ * @method $this                              setPrice(float $price)
+ * @method $this                              setOnSales(bool $onSales)
+ * @method $this                              setSku(string $sku)
+ * @method $this                              setBarcode(string $barcode)
+ * @method $this                              setVatRate(float $vatRate)
+ * @method $this                              setType(string $type)
+ * @method $this                              setCountry(string $country)
+ * @method $this                              setLanguage(string $language)
  *
  * @SuppressWarnings(PHPMD.TooManyFields)
  */
-class ProductRequestEntity extends RequestEntity
+class ProductRequest extends RequestEntity
 {
     const UNDERSCORE_ON_SERIALIZATION = false;
 
@@ -71,66 +77,75 @@ class ProductRequestEntity extends RequestEntity
      * Subscription external id.
      * Required for all requests.
      *
-     * @var string
+     * @var string $externalId
      */
     protected $externalId;
 
-    /** @var array */
+    /** @var array $images */
     protected $images = [];
 
-    /** @var array */
+    /** @var array $imagesUrl */
     protected $imagesUrl = [];
 
-    /** @var bool */
+    /** @var bool $active */
     protected $active = true;
 
-    /** @var string */
+    /** @var string $country */
+    protected $country;
+
+    /** @var string $language */
+    protected $language;
+
+    /** @var string $uuid */
     protected $uuid;
 
-    /** @var string */
+    /** @var string $businessUuid */
     protected $businessUuid;
 
-    /** @var ProductCategoryEntity[]|string[] */
+    /** @var ProductCategoryEntity[]|string[] $categories */
     protected $categories = [];
 
-    /** @var string */
+    /** @var string $currency */
     protected $currency;
 
-    /** @var string */
+    /** @var string $title */
     protected $title;
 
-    /** @var string */
+    /** @var string $description */
     protected $description;
 
-    /** @var float */
+    /** @var float $price */
     protected $price;
 
-    /** @var float|null */
+    /** @var float|null $salePrice */
     protected $salePrice;
 
-    /** @var bool */
+    /** @var bool $onSales */
     protected $onSales = false;
 
-    /** @var string */
+    /** @var string $sku */
     protected $sku;
 
-    /** @var string */
+    /** @var string $barcode */
     protected $barcode;
 
-    /** @var string */
+    /** @var string $type */
     protected $type;
 
-    /** @var float */
+    /** @var float $vatRate */
     protected $vatRate;
 
-    /** @var self[]|array */
+    /** @var self[]|array $variants */
     protected $variants = [];
+
+    /** @var null|ProductInventoryEntity $inventory */
+    protected $inventory;
 
     /**
      * Parent product id for variants.
      * Present only in request with a single variant data inside.
      *
-     * @var string|null
+     * @var string|null $parent
      */
     protected $parent;
 
@@ -138,30 +153,30 @@ class ProductRequestEntity extends RequestEntity
      * Parent product id for variants.
      * Present only in request with parent product with variants.
      *
-     * @var string|null
+     * @var string|null $product
      */
     protected $product;
 
-    /** @var ProductShippingEntity|null */
+    /** @var ProductShippingEntity|null $shipping */
     protected $shipping;
 
-    /** @var \DateTime|bool */
+    /** @var \DateTime|bool $createdAt */
     protected $createdAt;
 
-    /** @var \DateTime|bool */
+    /** @var \DateTime|bool $updatedAt */
     protected $updatedAt;
 
     /**
      * Available only for product variants
      *
-     * @var ProductVariantOptionEntity[]|array
+     * @var ProductVariantOptionEntity[]|array $options
      */
     protected $options = [];
 
     /**
      * @param string $updatedAt
      *
-     * @return static
+     * @return $this
      */
     public function setUpdatedAt($updatedAt)
     {
@@ -173,7 +188,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param string $createdAt
      *
-     * @return static
+     * @return $this
      */
     public function setCreatedAt($createdAt)
     {
@@ -185,7 +200,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param array $data
      *
-     * @return static
+     * @return $this
      */
     public function setShipping($data)
     {
@@ -197,7 +212,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param array $data
      *
-     * @return static
+     * @return $this
      */
     public function setCategories($data)
     {
@@ -205,8 +220,7 @@ class ProductRequestEntity extends RequestEntity
             /** Both ProductCategoryEntity fields array and simple title are possible */
             $this->categories[] = is_array($plainCategory)
                 ? new ProductCategoryEntity($plainCategory)
-                : $plainCategory
-            ;
+                : $plainCategory;
         }
 
         return $this;
@@ -215,7 +229,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param array[]|static[] $data
      *
-     * @return static
+     * @return $this
      */
     public function setVariants($data)
     {
@@ -229,7 +243,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param array|static $variant
      *
-     * @return self
+     * @return $this
      */
     public function addVariant($variant)
     {
@@ -244,11 +258,27 @@ class ProductRequestEntity extends RequestEntity
     }
 
     /**
+     * @param array|ProductInventoryEntity $inventory
+     *
+     * @return $this
+     */
+    public function setInventory($inventory)
+    {
+        if (is_array($inventory)) {
+            $inventory = new ProductInventoryEntity($inventory);
+        }
+
+        $this->inventory = $inventory;
+
+        return $this;
+    }
+
+    /**
      * Set product variant option
      *
      * @param array $options
      *
-     * @return self
+     * @return $this
      */
     public function setOptions($options)
     {
@@ -267,7 +297,7 @@ class ProductRequestEntity extends RequestEntity
      * @param string $name
      * @param string $value
      *
-     * @return self
+     * @return $this
      */
     public function addOption($name, $value)
     {
@@ -292,7 +322,7 @@ class ProductRequestEntity extends RequestEntity
     /**
      * @param float $salePrice
      *
-     * @return self
+     * @return $this
      */
     public function setSalePrice($salePrice)
     {
@@ -321,7 +351,7 @@ class ProductRequestEntity extends RequestEntity
     }
 
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function toArray($object = null)
     {
@@ -337,6 +367,7 @@ class ProductRequestEntity extends RequestEntity
 
     /**
      * @param $data
+     *
      * @return mixed
      */
     public function load($data)
